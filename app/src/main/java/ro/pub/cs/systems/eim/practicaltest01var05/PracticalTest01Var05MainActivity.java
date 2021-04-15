@@ -20,13 +20,14 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_practical_test01_var05_main);
-        savedInstanceState.putInt("presses", totalPresses);
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("presses")) {
                 totalPresses = savedInstanceState.getInt("presses");
+            } else {
+                savedInstanceState.putInt("presses", totalPresses);
             }
         }
-        
+
         Toast.makeText(this, "Total number of button presses: " + totalPresses, Toast.LENGTH_LONG).show();
 
         myText = (TextView)findViewById(R.id.myText);
@@ -43,9 +44,6 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
         button4.setOnClickListener(buttonClickListener);
         button5.setOnClickListener(buttonClickListener);
         button6.setOnClickListener(buttonClickListener);
-
-//        navigateToSecondaryActivityButton = (Button)findViewById(R.id.navigate_to_secondary_activity_button);
-//        navigateToSecondaryActivityButton.setOnClickListener(buttonClickListener);
     }
 
     private ButtonClickListener buttonClickListener = new ButtonClickListener();
@@ -55,6 +53,10 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
             totalPresses++;
             switch(view.getId()) {
                 case R.id.button:
+                    Intent intent = new Intent(getApplicationContext(), PracticalTest01Var05SecondaryActivity.class);
+                    String newScreenText = myText.getText().toString();
+                    intent.putExtra("text", newScreenText);
+                    startActivityForResult(intent, 1);
                     break;
                 case R.id.button2:
                     String text = button2.getText().toString();
@@ -77,6 +79,16 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
                     myText.setText(myText.getText() + ", " + text5);
                     break;
            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == 1) {
+            Toast.makeText(this, "The activity returned with result " + resultCode, Toast.LENGTH_LONG).show();
+            myText.setText("");
+            totalPresses = 0;
         }
     }
 }
