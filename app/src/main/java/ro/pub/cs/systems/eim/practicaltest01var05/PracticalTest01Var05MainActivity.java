@@ -15,7 +15,7 @@ public class PracticalTest01Var05MainActivity extends AppCompatActivity {
     private TextView myText;
     private Button button, button2, button3, button4, button5, button6;
     int totalPresses = 0;
-//    hashdsahd
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
