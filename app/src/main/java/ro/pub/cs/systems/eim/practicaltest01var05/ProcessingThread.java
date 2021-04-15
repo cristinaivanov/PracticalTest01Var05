@@ -10,25 +10,31 @@ public class ProcessingThread extends Thread {
 
     private Context context = null;
     private boolean isRunning = true;
+    private String text;
 
     public ProcessingThread(Context context, String text) {
         this.context = context;
-        // trb sa dau split la text dupa virgula aici
+        this.text = text;
     }
 
     @Override
     public void run() {
         while (isRunning) {
-            sendMessage();
+            String[] array;
+            array = text.split(", ");
+            for(String s: array) {
+                if (!s.equals("")) {
+                    sendMessage(s);
+                }
+            }
             sleep();
         }
     }
 
-    private void sendMessage() {
+    private void sendMessage(String word) {
         Intent intent = new Intent();
-        intent.setAction(Constants.actionTypes[random.nextInt(Constants.actionTypes.length)]);
-        intent.putExtra(Constants.BROADCAST_RECEIVER_EXTRA,
-                new Date(System.currentTimeMillis()) + " " + arithmeticMean + " " + geometricMean);
+        intent.setAction("button.text");
+        intent.putExtra("message", word);
         context.sendBroadcast(intent);
     }
 
